@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,42 +6,51 @@ import {
   StatusBar,
   SafeAreaView,
   Platform,
+  FlatList
 } from "react-native";
 
 import { Searchbar } from "react-native-paper";
 
 import { RestaurantInfoCard } from "../components/restaurant-info-card.component";
 
+import { SafeArea } from '../../../components/utility/safe-area.component'
+
 import styled from "styled-components";
 
-const isAndroid = Platform.OS === "android";
-
-const RestaurantScreenView = styled(SafeAreaView)`
-  flex: 1;
-  marginTop: ${isAndroid? StatusBar.currentHeight: 0}px;
-`;
+import { RestaurantsContext } from "../../../services/restaurants/restaurants.context";
 
 const SearchView = styled(View)`
-  padding: ${props => props.theme.space[3]};
+  padding: ${props => props.theme.space[0]};
 `;
 
 const ListView = styled(View)`
   flex: 1;
   padding: ${props => props.theme.space[3]};
-  background-color: blue;
 `;
 
+// The attrs is styled component function for giving attributes to component
+const RestaurantList = styled(FlatList).attrs({
+  contentContainerStyle: {
+    padding: 16
+  }
+})`
+`
+
 export const RestaurantsScreen = () => {
+  const restaurantContext = useContext(RestaurantsContext)
+  console.log(restaurantContext)
   return (
     <>
-      <RestaurantScreenView>
+      <SafeArea>
         <SearchView>
           <Searchbar placeholder="Search" />
         </SearchView>
-        <ListView>
-          <RestaurantInfoCard />
-        </ListView>
-      </RestaurantScreenView>
+          <RestaurantList 
+            data={restaurantContext.restaurants}
+            renderItem={() => <RestaurantInfoCard />}
+            keyExtractor={(item) => item.name}
+          />
+      </SafeArea>
     </>
   );
 };

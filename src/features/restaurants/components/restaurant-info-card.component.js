@@ -5,21 +5,29 @@ import { Card } from "react-native-paper";
 
 import styled from "styled-components/native";
 
-import { SvgXml } from 'react-native-svg'
-import star from '../../../../assets/star'
-import open from '../../../../assets/open'
+import { SvgXml } from "react-native-svg";
+import star from "../../../../assets/star";
+import open from "../../../../assets/open";
 
-import { Text } from "../../../components/typography/text.component"
-import { Spacer } from '../../../components/spacer/spacer.component'
+import { Text } from "../../../components/typography/text.component";
+import { Spacer } from "../../../components/spacer/spacer.component";
 
-import { RestaurantCard, RestaurantCardCover, Info, Rating, Address, Section, SectionEnd, Icon} from './restaurant-info-card.styles'
+import {
+  RestaurantCard,
+  RestaurantCardCover,
+  Info,
+  Rating,
+  Address,
+  Section,
+  SectionEnd,
+  Icon,
+} from "./restaurant-info-card.styles";
 
 const Title = styled.Text`
-  font-size: ${props => props.theme.fontSizes.body};
-  font-family: ${props => props.theme.fonts.heading};
-  color: ${props => props.theme.colors.ui.primary};
+  font-size: ${(props) => props.theme.fontSizes.body};
+  font-family: ${(props) => props.theme.fonts.heading};
+  color: ${(props) => props.theme.colors.ui.primary};
 `;
-
 
 export const RestaurantInfoCard = ({ restaurant = {} }) => {
   const {
@@ -34,7 +42,7 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
     isClosedTemporarily = true,
   } = restaurant;
 
-  const ratingArray = Array.from(new Array(Math.floor(rating)))
+  const ratingArray = Array.from(new Array(Math.floor(rating)));
 
   return (
     <RestaurantCard elevation={5}>
@@ -42,27 +50,28 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
       <Info>
         <Text variant="label">{name}</Text>
         <Section>
-            <Rating>
-            { 
-                ratingArray.map((item, index) => {
-                    return <SvgXml key={`star-rating-${index}`} xml={star} width={20} height={20} />
-                })
-            }
-            </Rating>
-            <SectionEnd>
-                {
-                    isClosedTemporarily && (
-                        <Text variant="error">
-                            CLOSED TEMPORARILY
-                        </Text>
-                    )
-                }
-                <Spacer position="left" size="large" />
-                { isOpenNow && <SvgXml xml={open} width={20} height={20} />}
-                <Spacer position="left" size="large">
-                    <Icon style={{ width: 15, height: 15 }} source={{ uri: icon }} />
-                </Spacer>
-            </SectionEnd>
+          <Rating>
+            {ratingArray.map((item, index) => {
+              return (
+                <SvgXml
+                  key={`star-rating-${index}`}
+                  xml={star}
+                  width={20}
+                  height={20}
+                />
+              );
+            })}
+          </Rating>
+          <SectionEnd>
+            {isClosedTemporarily && (
+              <Text variant="error">CLOSED TEMPORARILY</Text>
+            )}
+            <Spacer position="left" size="large" />
+            {isOpenNow && <SvgXml xml={open} width={20} height={20} />}
+            <Spacer position="left" size="large">
+              <Icon style={{ width: 15, height: 15 }} source={{ uri: icon }} />
+            </Spacer>
+          </SectionEnd>
         </Section>
         <Address>{address}</Address>
       </Info>
