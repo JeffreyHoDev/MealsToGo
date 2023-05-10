@@ -9,24 +9,15 @@ import {
   FlatList
 } from "react-native";
 
-import { Searchbar } from "react-native-paper";
+import { Search } from '../../restaurants/components/search.component'
 
 import { RestaurantInfoCard } from "../components/restaurant-info-card.component";
 
 import { SafeArea } from '../../../components/utility/safe-area.component'
 
 import styled from "styled-components";
-
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { RestaurantsContext } from "../../../services/restaurants/restaurants.context";
-
-const SearchView = styled(View)`
-  padding: ${props => props.theme.space[0]};
-`;
-
-const ListView = styled(View)`
-  flex: 1;
-  padding: ${props => props.theme.space[3]};
-`;
 
 // The attrs is styled component function for giving attributes to component
 const RestaurantList = styled(FlatList).attrs({
@@ -37,19 +28,28 @@ const RestaurantList = styled(FlatList).attrs({
 `
 
 export const RestaurantsScreen = () => {
-  const restaurantContext = useContext(RestaurantsContext)
-  console.log(restaurantContext)
+  const { restaurants, isLoading, error } = useContext(RestaurantsContext)
+  
   return (
     <>
       <SafeArea>
-        <SearchView>
-          <Searchbar placeholder="Search" />
-        </SearchView>
-          <RestaurantList 
-            data={restaurantContext.restaurants}
-            renderItem={() => <RestaurantInfoCard />}
-            keyExtractor={(item) => item.name}
-          />
+          {
+            isLoading ? (
+              <View style={{position: "absolute", top: "50%", left: "50%"}}>
+                <ActivityIndicator size={50} style={{marginLeft: -25}} animating={true} color={MD2Colors.red800} />
+              </View>
+            )
+            : (
+              <View>
+                <Search />
+                <RestaurantList 
+                  data={restaurants}
+                  renderItem={({item}) => <RestaurantInfoCard restaurant={item} />}
+                  keyExtractor={(item) => item.name}
+                />
+              </View>
+            )
+          }
       </SafeArea>
     </>
   );
