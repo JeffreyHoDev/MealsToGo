@@ -4,7 +4,7 @@ import { View, Image, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 
 import styled from "styled-components/native";
-
+import { Favourite } from '../../../components/favourite/favourite.component'
 import { SvgXml } from "react-native-svg";
 import star from "../../../../assets/star";
 import open from "../../../../assets/open";
@@ -40,12 +40,14 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
     isOpenNow = true,
     rating = 4,
     isClosedTemporarily = true,
+    placeId
   } = restaurant;
 
   const ratingArray = Array.from(new Array(Math.floor(rating)));
 
   return (
     <RestaurantCard elevation={5}>
+      <Favourite restaurant={restaurant}/>
       <RestaurantCardCover source={{ uri: photos[0] }} />
       <Info>
         <Text variant="label">{name}</Text>
@@ -54,7 +56,7 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
             {ratingArray.map((item, index) => {
               return (
                 <SvgXml
-                  key={`star-rating-${index}`}
+                  key={`star-rating-${placeId}-${index}`}
                   xml={star}
                   width={20}
                   height={20}
